@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<ices>
+    <!-- 
+    
+    This is an example configuration for a Melunaru
+    stream source machine. 
+    
+    This is source number 0. For other source replace the
+    number in stream metadata and mountpoint options below.
+    
+    If your server is publicly reachable, change the default
+    password form hackme to something else.
+    
+    Also set the mixer instance IP address or hostname in the
+    instance section. Good luck!
+    
+    -->
+    
+    <!-- run in background  -->
+    <background>0</background>
+    <!-- where logs go. -->
+    <logpath>/var/log/ices</logpath>
+    <logfile>ices.log</logfile>
+    <!-- size in kilobytes -->
+    <logsize>2048</logsize>
+    <!-- 1=error, 2=warn, 3=infoa ,4=debug -->
+    <loglevel>1</loglevel>
+    <!-- logfile is ignored if this is set to 1 -->
+    <consolelog>0</consolelog>
+
+    <!-- optional filename to write process id to -->
+    <!-- <pidfile>/home/ices/ices.pid</pidfile> -->
+
+    <stream>
+        <!-- metadata used for stream listing -->
+        <metadata>
+            <name>Melunaru Stream 0</name>
+            <genre>Live</genre>
+            <description>Melunaru live stream</description>
+            <url>https://github.com/vranki/melunaru</url>
+        </metadata>
+
+        <!--    Input module.
+
+            This example uses the 'alsa' module. It takes input from the
+            ALSA audio device (e.g. line-in), and processes it for live
+            encoding.  -->
+        <input>
+            <module>alsa</module>
+            <param name="rate">44100</param>
+            <param name="channels">2</param>
+            <param name="device">hw:1,0</param>
+            <!-- Read metadata (from stdin by default, or -->
+            <!-- filename defined below (if the latter, only on SIGUSR1) -->
+            <param name="metadata">1</param>
+            <param name="metadatafilename">test</param>
+        </input>
+
+        <!--    Stream instance.
+
+            You may have one or more instances here.  This allows you to
+            send the same input data to one or more servers (or to different
+            mountpoints on the same server). Each of them can have different
+            parameters. This is primarily useful for a) relaying to multiple
+            independent servers, and b) encoding/reencoding to multiple
+            bitrates.
+
+            If one instance fails (for example, the associated server goes
+            down, etc), the others will continue to function correctly.
+            This example defines a single instance doing live encoding at
+            low bitrate.  -->
+
+        <instance>
+            <!--    Server details.
+
+                You define hostname and port for the server here, along
+                with the source password and mountpoint.  -->
+
+            <hostname>192.168.1.46</hostname>
+            <port>8000</port>
+            <password>hackme</password>
+            <mount>/streamer0.ogg</mount>
+            <yp>0</yp>   <!-- allow stream to be advertised on YP, default 0 -->
+
+            <!--    Live encoding/reencoding:
+
+                channels and samplerate currently MUST match the channels
+                and samplerate given in the parameters to the alsa input
+                module above or the remsaple/downmix section below.  -->
+
+            <encode>  
+                <quality>5</quality>
+                <samplerate>44100</samplerate>
+                <channels>2</channels>
+            </encode>
+
+            <!-- stereo->mono downmixing, enabled by setting this to 1 -->
+            <downmix>0</downmix>
+
+            <!-- resampling.
+            
+                Set to the frequency (in Hz) you wish to resample to, -->
+             
+            <resample>
+                <in-rate>44100</in-rate>
+                <out-rate>44100</out-rate>
+            </resample>
+        </instance>
+
+    </stream>
+</ices>
+
