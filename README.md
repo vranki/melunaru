@@ -1,12 +1,19 @@
 # Melunaru
 
-Virual audio mixing with really long cables
+Virtual audio mixing with really long cables
 
-WIP
+```
+[Source] -----IP-_
+                  \
+[Source] -----IP--[ Mixer ] --> { Stream }
+                  /
+[Source] -----IP--
+```
+
 
 ## Source setup
 
-Sources run ices2 for streaming audio from their soundcards
+Sources run ices2 for streaming live audio from their soundcards
 
 Install packages (debian): 
 
@@ -19,10 +26,9 @@ modify it as needed.
 
 ## Mixer setup
 
-Mixer machine runs icecast2 daemon for receiving the streams and
-offers ogg vorbis streams. 
-mixer.py creates virtual sinks for each stream and plays
-them.
+Mixer machine runs icecast2 daemon for receiving the streams 
+and offers ogg vorbis streams. mixer.py creates virtual 
+sinks for each stream and plays them.
 
 Install packages (ubuntu): 
 
