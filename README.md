@@ -34,13 +34,13 @@ sudo apt install icecast2 python3-pulsectl mpv python3-mpv python3-asyncio-mqtt
 
 Commands:
 
-melunaru/volume/N -> set source N volume to given value (0-1)
-melunaru/url/N -> set source N playback URL
-melunaru/quit -> quits Melunaru process
+* melunaru/volume/N -> set source N volume to given value (0-1)
+* melunaru/url/N -> set source N playback URL
+* melunaru/quit -> quits Melunaru process
 
 Output: 
 
-melunaru/status/N -> Boolean, true if source is playing ok
+* melunaru/status/N -> Boolean, true if source is playing ok
 
 Examples:
 ```bash
