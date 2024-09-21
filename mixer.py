@@ -108,7 +108,7 @@ async def main():
 		for i in range(0,NUM_SOURCES):
 			ok = player_ok(players[i])
 			print('Player', i, 'ok:', ok)
-			mqttc.publish('melunaru/status/' + str(i), ok)
+			mqttc.publish('melunaru/status/' + str(i), 1 if ok else 0)
 		await asyncio.sleep(1)
 	mqttc.loop_stop()
 	for i in range(0,NUM_SOURCES):
