@@ -24,14 +24,16 @@ good enough.
 
 Mixer has virtual mixer which can be used to mix between
 sources and cue feature to listen to sources without
-playing them.
+playing them. Mixer uses mpv to play the streams.
+
+![Mixer GUI](gui-screenshot.png?raw=true "Mixer GUI")
 
 You can use qpwgraph or other Pipewire GUI to manage
 virtual audio routing to correct devices. You could even 
 ignore the mixer GUI and connect the streams to a physical 
 digital mixer. 
 
-![Mixer GUI](gui-screenshot.png?raw=true "Mixer GUI")
+![qpwgraph](qpwgraph.png?raw=true "qpwgraph showing two playing sources")
 
 ## Source setup
 
