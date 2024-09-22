@@ -1,0 +1,10 @@
+mqtt:
+  hostname: "localhost"
+sources:
+  - name: 'Source 0'
+    url: 'http://localhost:8000/streamer0.ogg'
+  - name: 'Radioverkko'
+    url: 'http://kuuntele.radioverkko.fi:8000/live'
+  - name: 'SDH'
+    url: 'https://stream.radiostaddenhaag.com/stream/1/'
+

@@ -10,6 +10,17 @@ Virtual audio mixing with really long cables
 [Source] -----IP--
 ```
 
+Sources are COTS linux machines that stream audio to
+the mixer machine using ices2/icecast2. 
+
+Mixer has virtual mixer which can be used to mix between
+sources and cue feature to listen to sources without
+playing them.
+
+You can use qpwgraph or other pipewire GUI to manage
+virtual audio routing to correct devices.
+
+![Mixer GUI](gui-screenshot.png?raw=true "Mixer GUI")
 
 ## Source setup
 
@@ -36,6 +47,11 @@ Install packages (ubuntu):
 sudo apt install icecast2 python3-pulsectl mpv python3-mpv python3-asyncio-mqtt
 ```
 
+### Config file
+
+The config file is quite self-explanatory. Enter names and URLs for desired
+source streams.
+
 ## MQTT API
 
 Commands:
@@ -43,10 +59,14 @@ Commands:
 * melunaru/volume/N -> set source N volume to given value (0-1)
 * melunaru/url/N -> set source N playback URL
 * melunaru/quit -> quits Melunaru process
+* melunaru/update -> request updating number of sources value
+* melunaru/cue/N -> enable or disable CUE on given source (parameter is int 0 or 1)
 
 Output: 
 
-* melunaru/status/N -> Boolean, true if source is playing ok
+* melunaru/status/N -> Int, 1 if source is playing ok
+* melunaru/num_sources -> Number of sources available
+
 
 Examples:
 ```bash
