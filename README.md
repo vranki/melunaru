@@ -1,6 +1,14 @@
 # Melunaru
 
-Virtual audio mixing with really long cables
+Virtual audio mixing with really long cables.
+
+This project was created for a rock festival to stream music
+from various stages to a central point, where a DJ could mix it 
+and send it over FM radio and internet stream.
+
+Other possible uses could be events with multiple stages such
+as demoparties and conventions that want to stream their content
+as audio.
 
 ```
 [Source] -----IP-_
@@ -10,15 +18,18 @@ Virtual audio mixing with really long cables
 [Source] -----IP--
 ```
 
-Sources are COTS linux machines that stream audio to
-the mixer machine using ices2/icecast2. 
+Sources are any COTS linux machines that can stream audio to
+the mixer machine using ices2/icecast2. Even Raspberry PI 1 is 
+good enough.
 
 Mixer has virtual mixer which can be used to mix between
 sources and cue feature to listen to sources without
 playing them.
 
-You can use qpwgraph or other pipewire GUI to manage
-virtual audio routing to correct devices.
+You can use qpwgraph or other Pipewire GUI to manage
+virtual audio routing to correct devices. You could even 
+ignore the mixer GUI and connect the streams to a physical 
+digital mixer. 
 
 ![Mixer GUI](gui-screenshot.png?raw=true "Mixer GUI")
 

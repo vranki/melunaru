@@ -122,7 +122,7 @@ class MelunaruMixer:
 		for i in range(0, self.num_sources):
 			print('Setting up source', i)
 			self.create_source(i)
-			self.set_volume(i, 0)
+			self.set_volume(i, self.config['default_volume'])
 			player = mpv.MPV()
 			player['audio-device'] = 'pipewire/Sink' + str(i)
 			self.players.append(player)

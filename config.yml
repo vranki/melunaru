@@ -1,5 +1,6 @@
 mqtt:
   hostname: "localhost"
+default_volume: 0
 sources:
   - name: 'Source 0'
     url: 'http://localhost:8000/streamer0.ogg'
