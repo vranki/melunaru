@@ -96,6 +96,8 @@ ApplicationWindow {
                         orientation: Qt.Vertical
                         Layout.fillHeight: true
                         value: 0
+                        from: 0
+                        to: 2
                         wheelEnabled: true
                         onValueChanged: melunaru.setVolume(index, value)
                         Timer {
