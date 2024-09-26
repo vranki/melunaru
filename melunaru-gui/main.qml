@@ -62,8 +62,14 @@ ApplicationWindow {
     }
 
     header: ToolBar {
-        Label {
-            text: connected ? "Connected" : "Disconnected"
+        RowLayout {
+            Label {
+                text: connected ? "Connected" : "Disconnected"
+            }
+            ToolButton {
+                text: pressed ? "Hold..." : "Quit Mixer"
+                onPressAndHold: melunaru.quit()
+            }
         }
     }
 
@@ -91,6 +97,11 @@ ApplicationWindow {
                         text: "CUE"
                         onCheckedChanged: melunaru.setCue(index, checked ? 1 : 0)
                     }
+                    Button {
+                        text: "VU"
+                        onClicked: melunaru.showVU(index)
+                    }
+
                     Slider {
                         id: volumeSlider
                         orientation: Qt.Vertical

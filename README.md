@@ -69,11 +69,12 @@ source streams.
 
 Commands:
 
-* melunaru/volume/N -> set source N volume to given value (0-1)
+* melunaru/volume/N -> set source N volume to given value (0-N)
 * melunaru/url/N -> set source N playback URL
-* melunaru/quit -> quits Melunaru process
+* melunaru/quit -> quits Melunaru process (deletes created sinks)
 * melunaru/update -> request updating number of sources value
 * melunaru/cue/N -> enable or disable CUE on given source (parameter is int 0 or 1)
+* melunaru/show_vu/N - > open pavumeter on given source
 
 Output: 
 
@@ -116,5 +117,37 @@ To play audio to sinks
 
 ```bash
 mpv https://stream.radiostaddenhaag.com/stream/1/ --audio-device=pipewire/Sink1
+```
+
+## Networking
+
+This is just my setup, you can handle networking however you want.
+
+I set up a private IP space for streamers and the mixer machine, 
+which can be run alongside normal dhcp LAN.
+
+This way you can plug the machines to any LAN and they will
+find each other without changes to config.
+
+My Melunaru network is 192.168.42.x/16.
+
+* Mixer ip 192.168.42.1
+* Streamer 1 ip 192.168.42.101
+* Streamer 2 ip 192.168.42.102
+* Streamer 3 ip 192.168.42.103
+* etc..
+
+You can setup /etc/network/interfaces like this:
+```
+iface enp3s0 inet dhcp
+
+iface enp3s0:1 inet static
+    address 192.168.42.100
+    netmask 255.255.0.0
+```
+
+You can also add the IP dynamically with command like this:
+```
+sudo ip addr add 192.168.42.1/16 dev enp3s0
 ```
 

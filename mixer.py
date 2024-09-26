@@ -32,15 +32,21 @@ def on_message(client, userdata, msg):
 		num = int(msg.topic.split('/')[2])
 		enabled = int(msg.payload)
 		mm.set_cue(num, True if enabled else False)
+	if msg.topic.startswith('melunaru/show_vu/'):
+		num = int(msg.topic.split('/')[2])
+		mm.show_VU(num)
 
 class MelunaruMixer:
 	def __init__(self):
 		self.num_sources = 0
 		self.running = True
 
+	def sink_name(self, num):
+		return 'Melunaru_stream_' + str(num)
+
 	def find_sink(self, num):
 		for sink in self.pulse.sink_list():
-			if(sink.description == 'Sink' + str(num) + ' sink'):
+			if(sink.description == self.sink_name(num) + ' sink'):
 				return sink
 		return None
 
@@ -49,14 +55,17 @@ class MelunaruMixer:
 		if(sink):
 			print('Sink', num, 'Already exists')
 		else:
-			self.pulse.module_load('module-remap-sink', 'sink_name=Sink' + str(num))
+			self.pulse.module_load('module-remap-sink', 'sink_name=' + self.sink_name(num))
 			print('Created sink', num)
 
-	def delete_source(self, num):
+	def delete_sink(self, sinkname):
 		for module in self.pulse.module_list():
-			if(module.argument == 'sink_name=Sink' + str(num)):
-				print('Unloading module', module.index, module.name)
+			if(module.argument == 'sink_name=' + sinkname):
+				print('Deleting sink', sinkname, ' - Unloading module', module.index, module.name)
 				self.pulse.module_unload(module.index)
+
+	def delete_source(self, num):
+		self.delete_sink(self.sink_name(num))
 
 	def set_volume(self, num, volume):
 		sink = self.find_sink(num)
@@ -100,9 +109,15 @@ class MelunaruMixer:
 		self.pulse.module_load('module-remap-sink', 'sink_name=Melunaru_CUE')
 		print('Created CUE sink')
 
+	def delete_cue(self):
+		self.delete_sink('Melunaru_CUE')
+
 	def set_cue(self, num, enabled):
 		self.link_ports('Sink' + str(num) + ':monitor_FL', 'Melunaru_CUE:playback_FL', enabled)
 		self.link_ports('Sink' + str(num) + ':monitor_FR', 'Melunaru_CUE:playback_FR', enabled)
+
+	def show_VU(self, num):
+		subprocess.Popen('pavumeter ' + self.sink_name(num), shell=True)		
 
 	def init(self):
 		self.running = True
@@ -124,7 +139,7 @@ class MelunaruMixer:
 			self.create_source(i)
 			self.set_volume(i, self.config['default_volume'])
 			player = mpv.MPV()
-			player['audio-device'] = 'pipewire/Sink' + str(i)
+			player['audio-device'] = 'pipewire/' + self.sink_name(i)
 			self.players.append(player)
 			self.urls.append(self.config['sources'][i]['url'])
 
@@ -149,6 +164,7 @@ class MelunaruMixer:
 			self.set_cue(i, False)
 			self.players[i].stop()
 			self.delete_source(i)
+		self.delete_cue()
 		self.pulse.close()
 		print('Shut down gracefully')
 

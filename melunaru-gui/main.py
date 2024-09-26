@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This Python file uses the following encoding: utf-8
 import os
 from pathlib import Path
@@ -52,7 +53,6 @@ class Melunaru(QObject):
         self.mqttc.connect("localhost", 1883, 60)
         self.mqttc.loop_start()
 
-
     @Slot()
     def update(self):
         self.mqttc.publish('melunaru/update')
@@ -84,6 +84,14 @@ class Melunaru(QObject):
         for i in range(0, newCount):
             self.sourceStatuses[i] = 0
         self.updated.emit()
+
+    @Slot(int)
+    def showVU(self, source):
+        self.mqttc.publish('melunaru/show_vu/' + str(source))
+
+    @Slot()
+    def quit(self):
+        self.mqttc.publish('melunaru/quit')
 
 
 if __name__ == "__main__":
